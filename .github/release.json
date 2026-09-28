@@ -1,0 +1,9 @@
+{
+  "project": "JustCleaner",
+  "assets": {
+    "JustCleaner-1.0.0-macOS-universal.zip": "JustCleaner-1.0.0-macOS.zip",
+    "JustCleaner-1.0.0-source.zip": "JustCleaner-1.0.0-source.zip"
+  },
+  "extras": [],
+  "notes": "JustCleaner 1.0.0. Download the package matching your operating system and processor. macOS-universal supports Intel and Apple silicon; x64 means Intel/AMD 64-bit; arm64 means ARM 64-bit. Source and SHA256SUMS.txt are included. See the README for installation, platform requirements, signing and third-party notices."
+}
