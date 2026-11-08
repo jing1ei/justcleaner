@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JustCleaner — a quiet way to keep a Mac clean</title>
+<meta name="description" content="A silent macOS menu bar app that finds throwaway files left by coding tools, browsers and apps, explains them in plain language, and clears them in one click. Music, projects and documents are protected by rules that cannot be switched off.">
+<style>
+:root{
+  --paper:#faf8f4; --paper-2:#fffefb; --ink:#1a1815; --ink-soft:#6f6a61;
+  --ink-faint:#756e64; --line:#e6e1d8; --line-soft:#efebe3;
+  --brass:#9a7b45; --sage:#5d7a5e;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#0f0f0e; --paper-2:#161614; --ink:#f0ece4; --ink-soft:#9b958a;
+    --ink-faint:#a49d92; --line:#292824; --line-soft:#211f1c;
+    --brass:#c9a468; --sage:#8fae8f;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; padding:104px 32px 140px; background:var(--paper); color:var(--ink);
+  font:400 16px/1.72 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:660px;margin:0 auto}
+.eyebrow{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 20px}
+h1{font:300 52px/1.08 ui-serif,"New York",Iowan Old Style,Palatino,Georgia,serif;
+   letter-spacing:-.02em;margin:0 0 20px}
+h2{font:300 15px/1.4 ui-sans-serif,-apple-system,sans-serif;letter-spacing:.2em;
+   text-transform:uppercase;color:var(--ink-faint);margin:0 0 20px;padding-bottom:12px;
+   border-bottom:1px solid var(--line)}
+h3{font:400 18px/1.4 ui-serif,"New York",Palatino,Georgia,serif;margin:0 0 4px}
+p{margin:0 0 14px}
+.lede{font-size:18px;line-height:1.62;color:var(--ink-soft);max-width:56ch;margin:0}
+.muted{color:var(--ink-soft)}
+.faint{color:var(--ink-faint);font-size:13px}
+section{margin:66px 0 0}
+a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--brass);padding-bottom:1px}
+a:hover{color:var(--brass)}
+em{font-style:normal;font-family:ui-serif,"New York",Palatino,Georgia,serif}
+
+pre{background:var(--paper-2);border:1px solid var(--line);border-left:2px solid var(--brass);
+    border-radius:2px;padding:18px 20px;margin:0 0 18px;
+    white-space:pre-wrap;word-break:break-all;
+    font:400 13px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink)}
+code{font:400 13.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink)}
+
+button{font:400 11px/1 ui-sans-serif,-apple-system,sans-serif;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink);background:var(--paper-2);
+  border:1px solid var(--line);border-radius:999px;padding:11px 22px;cursor:pointer;
+  transition:border-color .2s ease,color .2s ease,background .2s ease}
+@media (prefers-reduced-motion:reduce){button{transition:none}}
+:focus-visible{outline:2px solid var(--brass);outline-offset:4px}
+button:hover{border-color:var(--brass);color:var(--brass)}
+button:active{background:var(--paper)}
+button .arrow{display:inline-block;margin-left:9px;color:var(--brass);letter-spacing:0}
+
+.list{margin:0;padding:0;list-style:none}
+.list li{position:relative;padding:9px 0 9px 22px;color:var(--ink-soft);font-size:15px;
+         border-bottom:1px solid var(--line-soft)}
+.list li:last-child{border-bottom:0}
+.list li::before{content:"";position:absolute;left:0;top:19px;width:9px;height:1px;background:var(--brass)}
+.list li b{color:var(--ink);font-weight:400}
+
+.pair{padding:18px 0;border-bottom:1px solid var(--line-soft)}
+.pair:last-child{border-bottom:0}
+.pair p{margin:0;color:var(--ink-soft);font-size:14.5px;max-width:58ch}
+.seal{display:inline-block;margin-top:6px;font-size:10.5px;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--sage);border-top:1px solid currentColor;padding-top:3px}
+footer{margin:104px 0 0;padding-top:20px;border-top:1px solid var(--line);
+       font-size:12px;color:var(--ink-faint)}
+@media (max-width:620px){
+  body{padding:64px 20px 96px}
+  h1{font-size:36px}
+  .lede{font-size:16.5px}
+}
+</style></head><body><div class="wrap">
+
+<p class="eyebrow">JustCleaner · for macOS 11 and later</p>
+<h1>A quiet way to<br>keep a Mac clean.</h1>
+<p class="lede">One small icon in the menu bar. It finds the throwaway files your coding
+tools, browsers and apps leave behind, says in plain words what each one is, and clears
+them in a single click. Your music, projects, documents and settings sit behind rules
+that cannot be switched off.</p>
+
+<section>
+  <h2>Install</h2>
+  <p class="muted">Open Terminal on the Mac you want to tidy, paste this line, press return.</p>
+  <pre id="cmd">loading…</pre>
+  <p><button id="copy" type="button" aria-label="Copy the command"><span id="copyLabel" role="status" aria-live="polite">Copy the command</span><span class="arrow">⧉</span></button></p>
+  <p class="faint" style="margin-top:22px">It needs Apple's command line tools
+  (<code>swiftc</code>), which any Mac used for coding already has — if they are missing,
+  the installer says so and gives you the one command that adds them. About a minute,
+  no password, and nothing installed but <code>JustCleaner.app</code>.</p>
+</section>
+
+<section>
+  <h2>No compiler on that Mac?</h2>
+  <p class="muted">Open JustCleaner on a Mac that already has it, choose
+  <em>More → Export app for another Mac…</em> from its menu, and AirDrop the zip it leaves on the
+  Desktop. Unzip, double-click <code>Install JustCleaner.command</code>. Nothing to download,
+  nothing to compile.</p>
+</section>
+
+<section>
+  <h2>What it does</h2>
+  <ul class="list">
+    <li><b>Shows the number first.</b> How much junk there is, split into categories written for a human, not a log file.</li>
+    <li><b>Cleans the safe part in one click.</b> Disposable caches can be erased immediately; retained files stay recoverable.</li>
+    <li><b>Keeps a safety net.</b> Everything else waits a few days in <code>~/.justcleaner/quarantine</code> and goes back with one click.</li>
+    <li><b>Leaves open apps alone.</b> Caches belonging to recognized running apps are skipped; the menu names the app to close.</li>
+    <li><b>Never touches what matters.</b> <code>~/Music</code>, plug-ins, sample libraries, DAW projects, Documents, Desktop, photos, cloud folders, keys, app settings.</li>
+    <li><b>Explains itself.</b> A full HTML report of every folder found, why it exists, and what would happen to it.</li>
+    <li><b>Answers from Terminal too.</b> <code>JustCleaner scan</code> · <code>clean</code> · <code>undo</code> · <code>doctor</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Why it can be trusted</h2>
+  <div class="pair">
+    <h3>Check the safety rules</h3>
+    <p><code>JustCleaner doctor</code> runs the safety rules against a list of paths that must be
+    refused — your music folder, a plug-in, a keychain — and shows the verdict for each one.
+    If a single rule misbehaves, it says so and tells you not to clean anything.</p>
+    <span class="seal">Check with JustCleaner doctor</span>
+  </div>
+  <div class="pair">
+    <h3>Nothing is deleted where it sits</h3>
+    <p>Items are moved to the safety net first. Safe items may then be erased immediately;
+    retained items can be undone until expiry. Only you can empty the Trash.</p>
+    <span class="seal">Reversible by design</span>
+  </div>
+  <div class="pair">
+    <h3>It stays on your Mac</h3>
+    <p>No account or telemetry. Scans and reports stay local; optional external tools may
+    use their own network connections. No background daemon beyond the menu bar
+    icon itself. The report is a plain file in your home folder.</p>
+    <span class="seal">Local reports</span>
+  </div>
+</section>
+
+<section>
+  <h2>Files</h2>
+  <p class="muted"><a href="install.sh">install.sh</a> — the installer, readable in a minute<br>
+  <a href="justcleaner-src.tar.gz">justcleaner-src.tar.gz</a> — the complete source, nothing hidden</p>
+</section>
+
+<footer>JustCleaner · built for one Mac, made to work on any of them.</footer>
+</div>
+<script>
+// Works whatever address this page is served from.
+var base = location.origin + location.pathname.replace(/\/[^\/]*$/, "");
+if (base.slice(-1) === "/") base = base.slice(0, -1);
+function quote(s) { return "'" + s.replace(/'/g, "'\\''") + "'"; }
+var cmd = "curl -fsSL " + quote(base + "/install.sh") + " | JUSTCLEANER_URL=" + quote(base) + " bash";
+var resetLabel;
+
+document.getElementById("cmd").textContent = cmd;
+document.getElementById("copy").onclick = function () {
+  var label = document.getElementById("copyLabel"), was = "Copy the command";
+  clearTimeout(resetLabel);
+  function flash(text) {
+    label.textContent = text;
+    clearTimeout(resetLabel);
+    resetLabel = setTimeout(function () { label.textContent = was; }, 1900);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(cmd).then(function () { flash("Copied"); },
+                                           function () { flash("Select it and copy"); });
+  } else {
+    flash("Select it and copy");
+  }
+};
+</script>
+</body></html>

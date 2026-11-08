@@ -1,0 +1,4 @@
+{
+  "project": "JustCleaner",
+  "notes": "JustCleaner for macOS 11 and later. The attached universal app runs on Apple silicon and Intel Macs; the source archive and SHA256SUMS.txt are included. See the README for installation, signing and requirements. These builds are ad-hoc signed and are not notarized."
+}

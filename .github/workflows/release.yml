@@ -1,0 +1,125 @@
+name: Build and release
+
+# CI: every push to main and every pull request is tested and built; the
+# verified packages are stored as workflow artifacts.
+# Release: a push to main or a version tag vX.Y.Z publishes a GitHub Release
+# for the version declared in Sources/Core/Environment.swift. A published
+# version is immutable - the publisher never moves a tag or overwrites a
+# release; bump the version to ship something new.
+on:
+  push:
+    branches: [main]
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Test and build universal macOS app
+    runs-on: macos-15
+    timeout-minutes: 45
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      artifact-id: ${{ steps.packages.outputs.artifact-id }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Validate version
+        id: version
+        shell: bash
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          version="$(sed -n 's/.*static let string = "\([^"]*\)".*/\1/p' Sources/Core/Environment.swift)"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::App version must have the form 1.0.0"
+            exit 1
+          fi
+          if [[ "$REF_TYPE" == tag && "$REF_NAME" != "v$version" ]]; then
+            echo "::error::Tag must match the app version: v$version"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Test release tooling
+        run: |
+          python3 Tests/workflow.py
+          JC_VERSION="${{ steps.version.outputs.version }}" \
+            python3 .github/scripts/test_release.py
+
+      - name: Test, build, and package
+        run: ./release.sh
+
+      - name: Verify packages
+        shell: bash
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          cd dist
+          shasum -a 256 -c SHA256SUMS
+          unzip -tq "JustCleaner-$VERSION-source.zip"
+          unzip -tq "JustCleaner-$VERSION-macOS-universal.zip"
+
+      - name: Save packages
+        id: packages
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: JustCleaner-${{ steps.version.outputs.version }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            dist/JustCleaner-${{ steps.version.outputs.version }}-source.zip
+            dist/JustCleaner-${{ steps.version.outputs.version }}-macOS-universal.zip
+            dist/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    name: Publish GitHub Release
+    needs: [build]
+    if: >-
+      github.event_name == 'push' &&
+      (github.ref == 'refs/heads/main' ||
+       startsWith(github.ref, 'refs/tags/v'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    # Serialize publication across main and tag runs so the same version can
+    # never be published twice by two concurrent pushes.
+    concurrency:
+      group: justcleaner-publish
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+
+      - name: Download verified packages
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          artifact-ids: ${{ needs.build.outputs.artifact-id }}
+          merge-multiple: true
+          path: dist
+
+      - name: Publish verified packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JC_VERSION: ${{ needs.build.outputs.version }}
+        run: python .github/scripts/release.py dist

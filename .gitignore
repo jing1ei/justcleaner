@@ -1,0 +1,9 @@
+build/
+dist/
+.build-stage.*/
+.test-stage.*/
+site/justcleaner-src.tar.gz
+.DS_Store
+
+__pycache__/
+*.py[cod]

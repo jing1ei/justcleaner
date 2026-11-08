@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="tile" x1=".12" y1="0" x2=".85" y2="1">
+      <stop stop-color="#F5BED7"/>
+      <stop offset=".5" stop-color="#BBC8EC"/>
+      <stop offset="1" stop-color="#83BDE9"/>
+    </linearGradient>
+    <linearGradient id="brush" x1="0" y1="0" x2=".8" y2="1">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#EDF4FF"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#FFFFFF" stop-opacity=".48"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity=".04"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2=".75" y2="1">
+      <stop stop-color="#FFFFFF" stop-opacity=".78"/>
+      <stop offset=".38" stop-color="#FFFFFF" stop-opacity=".16"/>
+      <stop offset=".65" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="1" stop-color="#DDF7FF" stop-opacity=".32"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFFFFF" stop-opacity=".95"/>
+      <stop offset=".45" stop-color="#FFF1FC" stop-opacity=".1"/>
+      <stop offset=".8" stop-color="#FFFFFF" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#D5F6FF" stop-opacity=".95"/>
+    </linearGradient>
+    <linearGradient id="handleGlass" x1="0" y1="0" x2="1" y2=".6">
+      <stop stop-color="#FFFFFF" stop-opacity=".95"/>
+      <stop offset=".35" stop-color="#FFFFFF" stop-opacity=".64"/>
+      <stop offset=".7" stop-color="#E8F5FF" stop-opacity=".8"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".18" cy=".12" r=".85">
+      <stop stop-color="#FFFFFF" stop-opacity=".65"/>
+      <stop offset=".5" stop-color="#FFE5FA" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="tileClip"><rect x="76" y="72" width="872" height="872" rx="194"/></clipPath>
+  </defs>
+  <rect x="66" y="78" width="892" height="892" rx="204" fill="#525A89" opacity=".12"/>
+  <rect x="66" y="62" width="892" height="892" rx="204" fill="url(#tile)"/>
+  <g clip-path="url(#tileClip)">
+    <rect x="76" y="72" width="872" height="872" fill="url(#glow)"/>
+    <path d="M76 72H948V286C729 223 598 382 374 406C233 421 141 371 76 349Z" fill="url(#glass)"/>
+    <path d="M76 349L374 406L174 808L76 696Z" fill="#FFFFFF" opacity=".075"/>
+    <path d="M948 286L699 574L948 775Z" fill="#DCF8FF" opacity=".11"/>
+    <path d="M174 808L699 574L850 944H284Z" fill="#D6D1FF" opacity=".07"/>
+    <path d="M76 349C141 371 233 421 374 406C598 382 729 223 948 286" fill="none" stroke="#FFFFFF" stroke-opacity=".2" stroke-width="2"/>
+  </g>
+  <rect x="82" y="78" width="860" height="860" rx="188" fill="none" stroke="url(#edge)" stroke-width="3"/>
+  <path d="M121 263C124 166 167 116 275 111H652" fill="none" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="5" stroke-linecap="round"/>
+  <path d="M905 729C905 862 864 905 744 905H549" fill="none" stroke="#DCFAFF" stroke-opacity=".52" stroke-width="5" stroke-linecap="round"/>
+  <rect x="72" y="68" width="880" height="880" rx="198" fill="none" stroke="url(#rim)" stroke-width="9"/>
+  <path d="M271 708C368 794 594 798 751 695" fill="none" stroke="#5B76AB" stroke-opacity=".13" stroke-width="34" stroke-linecap="round"/>
+  <g transform="rotate(34 500 492)">
+    <rect x="459" y="217" width="88" height="347" rx="44" fill="#6175AC" opacity=".18" transform="translate(8 18)"/>
+    <rect x="456" y="211" width="88" height="347" rx="44" fill="url(#handleGlass)" stroke="#FFFFFF" stroke-opacity=".7" stroke-width="3"/>
+    <path d="M407 507Q500 478 593 507L659 702Q504 764 341 702Z" fill="#6175AC" opacity=".2" transform="translate(8 16)"/>
+    <path d="M407 499Q500 470 593 499L659 694Q504 756 341 694Z" fill="url(#handleGlass)" stroke="#FFFFFF" stroke-opacity=".68" stroke-width="3"/>
+    <path d="M472 258V458" fill="none" stroke="#FFFFFF" stroke-opacity=".8" stroke-width="7" stroke-linecap="round"/>
+    <path d="M407 499Q500 470 593 499L608 544Q501 516 392 544Z" fill="#D8D8F3"/>
+    <path d="M417 652L402 711M470 668L465 723M526 668L530 723M581 653L597 709" stroke="#A2B9DF" stroke-width="16" stroke-linecap="round"/>
+  </g>
+  <path transform="translate(24 -20)" d="M729 256C741 311 760 330 815 342C760 354 741 373 729 428C717 373 698 354 643 342C698 330 717 311 729 256Z" fill="#FFFFFF"/>
+  <circle cx="797" cy="237" r="15" fill="#FFF1F8" opacity=".9"/>
+</svg>
