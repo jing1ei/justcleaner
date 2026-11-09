@@ -156,6 +156,14 @@ class ReleaseTests(unittest.TestCase):
         sent = sorted(Path(x).name for x in upload if Path(x).name in wanted)
         self.assertEqual(sent, sorted(wanted))
 
+    def test_resumed_draft_keeps_its_version_tag(self):
+        self.existing = True
+        self.publish()
+        draft = next(c[3] for c in self.calls if len(c) == 4 and
+                     c[0] == "api" and c[1] == "PATCH" and "/releases/" in c[2])
+        self.assertTrue(draft["draft"])
+        self.assertEqual(draft["tag_name"], "v" + VERSION)
+
     def test_tag_force_move_never_happens(self):
         self.tag_exists = True
         self.same_commit = True

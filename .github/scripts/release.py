@@ -140,14 +140,14 @@ def publish(directory, config, version, sha, repo):
     notes = config.get("notes", "").strip()
     body = notes + f"\n\nBuilt from `{sha}`.\n"
     metadata = dict(name=version, body=body, prerelease=False,
-                    target_commitish=sha)
+                    target_commitish=sha, tag_name=tag)
 
     if releases:
         release = api(prefix + f"/releases/{releases[0]['id']}", "PATCH",
                       dict(metadata, draft=True))
     else:
         release = api(prefix + "/releases", "POST",
-                      dict(metadata, draft=True, tag_name=tag))
+                      dict(metadata, draft=True))
 
     gh("release", "upload", tag, "--repo", repo, "--clobber",
        *(str(directory / name) for name in sorted(expected)))
