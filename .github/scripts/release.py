@@ -22,7 +22,7 @@ import subprocess
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
-BUILD_CHECKSUMS = "SHA256SUMS"
+BUILD_CHECKSUMS = "SHA256SUMS.txt"
 PUBLISHED_CHECKSUMS = "SHA256SUMS.txt"
 
 
@@ -38,7 +38,8 @@ def asset_names(project, version):
     """The exact, version-driven set of files a release must contain."""
     return [
         f"{project}-{version}-source.zip",
-        f"{project}-{version}-macOS-universal.zip",
+        f"{project}-{version}-macOS-arm64.dmg",
+        f"{project}-{version}-macOS-x64.dmg",
     ]
 
 

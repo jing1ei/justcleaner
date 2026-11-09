@@ -70,9 +70,10 @@ jobs:
         run: |
           set -euo pipefail
           cd dist
-          shasum -a 256 -c SHA256SUMS
+          shasum -a 256 -c SHA256SUMS.txt
           unzip -tq "JustCleaner-$VERSION-source.zip"
-          unzip -tq "JustCleaner-$VERSION-macOS-universal.zip"
+          hdiutil verify -quiet "JustCleaner-$VERSION-macOS-arm64.dmg"
+          hdiutil verify -quiet "JustCleaner-$VERSION-macOS-x64.dmg"
 
       - name: Save packages
         id: packages
@@ -81,8 +82,8 @@ jobs:
           name: JustCleaner-${{ steps.version.outputs.version }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             dist/JustCleaner-${{ steps.version.outputs.version }}-source.zip
-            dist/JustCleaner-${{ steps.version.outputs.version }}-macOS-universal.zip
-            dist/SHA256SUMS
+            dist/JustCleaner-${{ steps.version.outputs.version }}-macOS-*.dmg
+            dist/SHA256SUMS.txt
           if-no-files-found: error
           retention-days: 30
 

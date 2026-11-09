@@ -17,8 +17,9 @@ mkdir -p "$SOURCE" dist
 cp -R .github Sources Tests assets docs site README.md build.sh install.sh sync.sh release.sh .gitignore "$SOURCE/"
 rm -f "$SOURCE/site/justcleaner-src.tar.gz"
 COPYFILE_DISABLE=1 ditto -c -k --norsrc --keepParent "$SOURCE" "$STAGE/JustCleaner-$VERSION-source.zip"
-./build/JustCleaner.app/Contents/MacOS/JustCleaner pack --to "$STAGE"
-mv "$STAGE/JustCleaner-for-another-Mac.zip" "dist/JustCleaner-$VERSION-macOS-universal.zip"
+for arch in arm64 x64; do
+  .github/scripts/package-macos.sh build/JustCleaner.app "$VERSION" "$arch" dist
+done
 mv "$STAGE/JustCleaner-$VERSION-source.zip" "dist/JustCleaner-$VERSION-source.zip"
-(cd dist && shasum -a 256 "JustCleaner-$VERSION-source.zip" "JustCleaner-$VERSION-macOS-universal.zip" > SHA256SUMS)
+(cd dist && shasum -a 256 "JustCleaner-$VERSION-source.zip" "JustCleaner-$VERSION-macOS-arm64.dmg" "JustCleaner-$VERSION-macOS-x64.dmg" > SHA256SUMS.txt)
 printf 'Release: %s/dist\n' "$ROOT"

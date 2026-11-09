@@ -7,6 +7,18 @@
 A local macOS menu-bar utility for coding-tool caches, package downloads,
 and app leftovers. **macOS 11+ · Apple silicon + Intel · No account**
 
+## Download packages
+
+Choose the package for your computer from [GitHub Releases](https://github.com/jing1ei/justcleaner/releases/latest).
+
+| Computer | Package |
+| --- | --- |
+| Mac with Apple silicon | `JustCleaner-1.1.1-macOS-arm64.dmg` |
+| Mac with Intel | `JustCleaner-1.1.1-macOS-x64.dmg` |
+
+On macOS, open the DMG and drag the app to Applications.
+Each release includes one source ZIP and `SHA256SUMS.txt`.
+
 ## Install
 
 From the source folder:
@@ -20,7 +32,7 @@ installs JustCleaner in `/Applications`, falling back to `~/Applications`, and o
 it. **Click the sparkle icon in the menu bar. There is no Dock window.**
 The menu automatically follows macOS Light, Dark, or Auto appearance.
 
-Have the packaged app? Unzip `JustCleaner-1.1.0-macOS-universal.zip`, then run
+Have the packaged app? Open the DMG for your Mac, drag JustCleaner.app to Applications, then run
 **Install JustCleaner.command**. The package needs no compiler. This local build is
 ad-hoc signed, not notarized; use your Mac's normal approval flow if prompted.
 
@@ -91,7 +103,7 @@ quit JustCleaner, and move the app to Trash. Keep recovery files until no longer
 ./build.sh                       # build/JustCleaner.app (universal when the Mac can build both slices)
 ./build.sh --arch=arm64          # Apple silicon only; --arch=x86_64 for Intel
 ./Tests/run.sh                   # isolated regression tests
-./release.sh                     # verified source ZIP, universal app ZIP, SHA256SUMS in dist/
+./release.sh                     # verified source ZIP, arm64/x64 DMGs, SHA256SUMS.txt in dist/
 ```
 
 `build.sh` selects the newest macOS SDK the installed compiler supports, so a

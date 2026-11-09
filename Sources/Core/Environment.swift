@@ -1,7 +1,7 @@
 import Foundation
 
 enum JustCleanerVersion {
-    static let string = "1.1.0"
+    static let string = "1.1.1"
     static let bundleID = "com.justcleaner.menubar"
 }
 

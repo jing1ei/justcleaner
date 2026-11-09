@@ -32,7 +32,7 @@ class ReleaseTests(unittest.TestCase):
         self.names = release.asset_names(PROJECT, VERSION)
         for name in self.names:
             (self.source / name).write_bytes(name.encode())
-        (self.source / "SHA256SUMS").write_text("".join(
+        (self.source / "SHA256SUMS.txt").write_text("".join(
             f"{hashlib.sha256(name.encode()).hexdigest()}  {name}\n"
             for name in self.names))
         self.calls = []
@@ -98,7 +98,8 @@ class ReleaseTests(unittest.TestCase):
     def test_required_names_are_version_driven(self):
         self.assertEqual(self.names, [
             f"{PROJECT}-{VERSION}-source.zip",
-            f"{PROJECT}-{VERSION}-macOS-universal.zip"])
+            f"{PROJECT}-{VERSION}-macOS-arm64.dmg",
+            f"{PROJECT}-{VERSION}-macOS-x64.dmg"])
 
     def test_prepare_copies_and_checksums(self):
         directory = self.ready()
@@ -122,7 +123,7 @@ class ReleaseTests(unittest.TestCase):
             self.ready()
 
     def test_missing_build_manifest_stops_prepare(self):
-        (self.source / "SHA256SUMS").unlink()
+        (self.source / "SHA256SUMS.txt").unlink()
         with self.assertRaises(ValueError):
             self.ready()
 
